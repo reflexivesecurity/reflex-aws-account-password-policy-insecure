@@ -1,10 +1,25 @@
 module "reflex_aws_account_password_policy_deleted" {
   source           = "git::https://github.com/cloudmitigator/reflex-engine.git//modules/cwe_lambda"
   rule_name        = "AccountPasswordPolicyDeletedRule"
-  rule_description = "TODO: Provide rule description"
+  rule_description = "Detects the deletion of an account password policy"
 
   event_pattern = <<PATTERN
-# TODO: Provide event pattern
+{
+  "source": [
+    "aws.iam"
+  ],
+  "detail-type": [
+    "AWS API Call via CloudTrail"
+  ],
+  "detail": {
+    "eventSource": [
+      "iam.amazonaws.com"
+    ],
+    "eventName": [
+      "DeleteAccountPasswordPolicy"
+    ]
+  }
+}
 PATTERN
 
   function_name   = "AccountPasswordPolicyDeletedRule"
@@ -15,11 +30,6 @@ PATTERN
     SNS_TOPIC = var.sns_topic_arn,
     
   }
-  custom_lambda_policy = <<EOF
-# TODO: Provide required lambda permissions policy
-EOF
-
-
 
   queue_name    = "AccountPasswordPolicyDeletedRule"
   delay_seconds = 0

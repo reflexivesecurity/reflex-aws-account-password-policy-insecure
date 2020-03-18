@@ -1,5 +1,5 @@
 # reflex-aws-account-password-policy-deleted
-TODO: Write a brief description of your rule and what it does.
+A Reflex Rule for detecting the deletion of an AWS account password policy.
 
 ## Usage
 To use this rule either add it to your `reflex.yaml` configuration file:  
