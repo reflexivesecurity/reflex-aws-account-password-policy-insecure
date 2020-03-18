@@ -1,5 +1,5 @@
 module "reflex_aws_account_password_policy_deleted" {
-  source           = "git::https://github.com/cloudmitigator/reflex-engine.git//modules/cwe_lambda"
+  source           = "git::https://github.com/cloudmitigator/reflex-engine.git//modules/cwe_lambda?ref=v0.5.4"
   rule_name        = "AccountPasswordPolicyDeletedRule"
   rule_description = "Detects the deletion of an account password policy"
 
