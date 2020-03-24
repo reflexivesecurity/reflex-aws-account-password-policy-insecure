@@ -47,9 +47,9 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
     def remediate(self):
         """ Fix the non-compliant resource so it conforms to the rule """
         target_config = self.get_target_password_policy()
-        formatted_config = self.format_password_policy(target_config)
+        cleaned_config = self.format_password_policy(target_config)
 
-        self.client.update_account_password_policy(**formatted_config)
+        self.client.update_account_password_policy(**cleaned_config)
 
     def get_remediation_message(self):
         """ Returns a message about the remediation action that occurred """
@@ -73,27 +73,34 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
         target_config["PasswordReusePrevention"] = os.environ.get("PASSWORD_REUSE_PREVENTION", 0)
         target_config["HardExpiry"] = os.environ.get("HARD_EXPIRY", False)
 
-        return target_config
+        return self.format_password_policy(target_config)
+
+    def clean_password_policy(self, policy):
+        """
+        Remove default configuration values that will cause Exceptions when explicitly provided
+        """
+        cleaned_policy = {}
+
+        for key, value in policy.items():
+            if value == 0:
+                # We don't want to include this key/value pair, since the default is desired
+                # and explicitly providing the default value can cause an Exception
+                continue
+            cleaned_policy[key] = value
+
+        return cleaned_policy
 
     def format_password_policy(self, policy):
-        """ Converts string values representing a boolean to boolean """
+        """ Converts string values to the appropriate type """
         formatted_policy = {}
 
         for key, value in policy.items():
             try:
-                if value is None:
-                    # We don't want to include this key/value pair, since the default is desired
-                    # and explicitly providing the default value can cause an Exception
-                    continue
                 if value.lower() == "true":
                     formatted_policy[key] = True
                 elif value.lower() == "false":
                     formatted_policy[key] = False
                 elif int(value):
-                    if int(value) == 0:
-                        # We don't want to include this key/value pair, since the default is desired
-                        # and explicitly providing the default value can cause an Exception
-                        continue
                     formatted_policy[key] = int(value)
                 else:
                     formatted_policy[key] = value
