@@ -39,8 +39,8 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
 
         target_config = self.get_target_password_policy()
 
-        self.LOGGER.debug(f"current_config: {json.dumps(current_config)}")
-        self.LOGGER.debug(f"target_config: {json.dumps(current_config)}")
+        self.LOGGER.debug(f"current_config: {current_config}")
+        self.LOGGER.debug(f"target_config: {target_config}")
 
         return current_config == target_config
 
