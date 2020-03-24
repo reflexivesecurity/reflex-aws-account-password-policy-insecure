@@ -42,7 +42,11 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
         self.LOGGER.debug(f"current_config: {current_config}")
         self.LOGGER.debug(f"target_config: {target_config}")
 
-        return current_config == target_config
+        for key, value in current_config.items():
+            if target_config[key] != value:
+                return False
+
+        return True
 
     def remediate(self):
         """ Fix the non-compliant resource so it conforms to the rule """
