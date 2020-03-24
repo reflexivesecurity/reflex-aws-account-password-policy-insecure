@@ -71,4 +71,4 @@ module "reflex-aws-account-password-policy-insecure" {
 ```
 
 ## License
-This Reflex rule is made available under the MPL 2.0 license. For more information view the [LICENSE](https://github.com/cloudmitigator/reflex-aws-account-password-policy-deleted/blob/master/LICENSE) 
+This Reflex rule is made available under the MPL 2.0 license. For more information view the [LICENSE](https://github.com/cloudmitigator/reflex-aws-account-password-policy-insecure/blob/master/LICENSE)
