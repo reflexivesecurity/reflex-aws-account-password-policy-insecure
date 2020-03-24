@@ -60,8 +60,8 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
         target_config["RequireUppercaseCharacters"] = os.environ.get("REQUIRE_UPPERCASE_CHARACTERS", True)
         target_config["RequireLowercaseCharacters"] = os.environ.get("REQUIRE_LOWERCASE_CHARACTERS", True)
         target_config["AllowUsersToChangePassword"] = os.environ.get("ALLOW_USERS_TO_CHANGE_PASSWORD", True)
-        target_config["MaxPasswordAge"] = os.environ.get("MAX_PASSWORD_AGE", 0)
-        target_config["PasswordReusePrevention"] = os.environ.get("PASSWORD_REUSE_PREVENTION", 0)
+        target_config["MaxPasswordAge"] = os.environ.get("MAX_PASSWORD_AGE", None)
+        target_config["PasswordReusePrevention"] = os.environ.get("PASSWORD_REUSE_PREVENTION", None)
         target_config["HardExpiry"] = os.environ.get("HARD_EXPIRY", False)
 
         return self.format_password_policy(target_config)
@@ -72,6 +72,10 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
 
         for key, value in policy.items():
             try:
+                if value is None:
+                    # We don't want to include this key/value pair, since the default is desired
+                    # and explicitly providing the default value can cause an Exception
+                    continue
                 if value.lower() == "true":
                     formatted_policy[key] = True
                 elif value.lower() == "false":
