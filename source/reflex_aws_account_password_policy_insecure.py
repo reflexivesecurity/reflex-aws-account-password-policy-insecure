@@ -76,9 +76,11 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
                     formatted_policy[key] = True
                 elif value.lower() == "false":
                     formatted_policy[key] = False
+                elif int(value):
+                    formatted_policy[key] = int(value)
                 else:
                     formatted_policy[key] = value
-            except AttributeError:
+            except (AttributeError, ValueError):
                 formatted_policy[key] = value
 
         return formatted_policy
