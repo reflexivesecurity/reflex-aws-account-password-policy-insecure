@@ -70,7 +70,7 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
         """ Converts string values representing a boolean to boolean """
         formatted_policy = {}
 
-        for key, value in policy:
+        for key, value in policy.items():
             try:
                 if value.lower() == "true":
                     formatted_policy[key] = True
