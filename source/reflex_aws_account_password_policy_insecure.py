@@ -32,6 +32,10 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
         except self.client.exceptions.NoSuchEntityException:
             return False
 
+        # ExpirePasswords is not configurable, so we don't want to compare to it.
+        # If we don't remove it, we'll always get False and create an infinite loop.
+        del current_config["ExpirePasswords"]
+
         target_config = self.get_target_password_policy()
 
         return current_config == target_config
@@ -39,8 +43,9 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
     def remediate(self):
         """ Fix the non-compliant resource so it conforms to the rule """
         target_config = self.get_target_password_policy()
+        formatted_config = self.format_password_policy(target_config)
 
-        self.client.update_account_password_policy(**target_config)
+        self.client.update_account_password_policy(**formatted_config)
 
     def get_remediation_message(self):
         """ Returns a message about the remediation action that occurred """
@@ -60,11 +65,11 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
         target_config["RequireUppercaseCharacters"] = os.environ.get("REQUIRE_UPPERCASE_CHARACTERS", True)
         target_config["RequireLowercaseCharacters"] = os.environ.get("REQUIRE_LOWERCASE_CHARACTERS", True)
         target_config["AllowUsersToChangePassword"] = os.environ.get("ALLOW_USERS_TO_CHANGE_PASSWORD", True)
-        target_config["MaxPasswordAge"] = os.environ.get("MAX_PASSWORD_AGE", None)
-        target_config["PasswordReusePrevention"] = os.environ.get("PASSWORD_REUSE_PREVENTION", None)
+        target_config["MaxPasswordAge"] = os.environ.get("MAX_PASSWORD_AGE", 0)
+        target_config["PasswordReusePrevention"] = os.environ.get("PASSWORD_REUSE_PREVENTION", 0)
         target_config["HardExpiry"] = os.environ.get("HARD_EXPIRY", False)
 
-        return self.format_password_policy(target_config)
+        return target_config
 
     def format_password_policy(self, policy):
         """ Converts string values representing a boolean to boolean """
@@ -81,6 +86,10 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
                 elif value.lower() == "false":
                     formatted_policy[key] = False
                 elif int(value):
+                    if int(value) == 0:
+                        # We don't want to include this key/value pair, since the default is desired
+                        # and explicitly providing the default value can cause an Exception
+                        continue
                     formatted_policy[key] = int(value)
                 else:
                     formatted_policy[key] = value
