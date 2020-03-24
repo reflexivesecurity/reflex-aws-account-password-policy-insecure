@@ -27,10 +27,10 @@ PATTERN
   source_code_dir = "${path.module}/source"
   handler         = "reflex_aws_account_password_policy_insecure.lambda_handler"
   lambda_runtime  = "python3.7"
-  environment_variable_map = {
+  environment_variable_map = merge({
     SNS_TOPIC = var.sns_topic_arn,
-    
-  }
+    MODE      = var.mode
+  }, var.environment_variable_map)
   custom_lambda_policy = <<EOF
 {
   "Version": "2012-10-17",
