@@ -30,6 +30,7 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
         try:
             current_config = self.client.get_account_password_policy()["PasswordPolicy"]
         except self.client.exceptions.NoSuchEntityException:
+            self.LOGGER.debug("No account password policy set.")
             return False
 
         # ExpirePasswords is not configurable, so we don't want to compare to it.
@@ -37,6 +38,9 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
         del current_config["ExpirePasswords"]
 
         target_config = self.get_target_password_policy()
+
+        self.LOGGER.debug(f"current_config: {json.dumps(current_config)}")
+        self.LOGGER.debug(f"target_config: {json.dumps(current_config)}")
 
         return current_config == target_config
 
