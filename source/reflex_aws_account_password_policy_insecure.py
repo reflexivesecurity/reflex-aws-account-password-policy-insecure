@@ -27,7 +27,11 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
 
         Return True if it is compliant, and False if it is not.
         """
-        current_config = self.client.get_account_password_policy()["PasswordPolicy"]
+        try:
+            current_config = self.client.get_account_password_policy()["PasswordPolicy"]
+        except self.client.exceptions.NoSuchEntityException:
+            return False
+
         target_config = self.get_target_password_policy()
 
         return current_config == target_config
