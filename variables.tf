@@ -8,6 +8,12 @@ variable "reflex_kms_key_id" {
   type        = string
 }
 
+variable "environment_variable_map" {
+  description = "Map of environment variables for Lambda"
+  type        = map(string)
+  default     = {}
+}
+
 variable "mode" {
   description = "The mode that the Rule will operate in. Valid choices: DETECT | REMEDIATE"
   type        = string
