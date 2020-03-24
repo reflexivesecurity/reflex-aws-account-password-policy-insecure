@@ -47,7 +47,7 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
     def remediate(self):
         """ Fix the non-compliant resource so it conforms to the rule """
         target_config = self.get_target_password_policy()
-        cleaned_config = self.format_password_policy(target_config)
+        cleaned_config = self.clean_password_policy(target_config)
 
         self.client.update_account_password_policy(**cleaned_config)
 
