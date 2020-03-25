@@ -8,10 +8,58 @@ variable "reflex_kms_key_id" {
   type        = string
 }
 
-variable "environment_variable_map" {
-  description = "Map of environment variables for Lambda"
-  type        = map(string)
-  default     = {}
+variable "minimum_password_length" {
+  description = "Minimum characters for password required."
+  type        = number
+  default     = 8
+}
+
+variable "require_symbols" {
+  description = "Require symbols in password"
+  type        = bool
+  default     = true
+}
+
+variable "require_numbers" {
+  description = "Require numbers in password"
+  type        = bool
+  default     = true
+}
+
+variable "require_uppercase_characters" {
+  description = "Require upper characters in password."
+  type        = bool
+  default     = true
+}
+
+variable "require_lowercase_characters" {
+  description = "Require lower characters in password."
+  type        = bool
+  default     = true
+}
+
+variable "allow_users_to_change_password" {
+  description = "Allow users to change password"
+  type        = bool
+  default     = true
+}
+
+variable "max_password_age" {
+  description = "Maximume age in days of password (0 for none)"
+  type        = number
+  default     = 0
+}
+
+variable "password_reuse_prevention" {
+  description = "Number of passwords to prevent reuse (0 for no prevention)."
+  type        = number
+  default     = 0
+}
+
+variable "hard_expiry" {
+  description = "Whether or not to lock out users with expired passwords."
+  type        = bool
+  default     = false
 }
 
 variable "mode" {

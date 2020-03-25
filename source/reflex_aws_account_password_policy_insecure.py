@@ -67,15 +67,15 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
         """ Returns a dict with the target password policy configuration """
         target_config = {}
 
-        target_config["MinimumPasswordLength"] = os.environ.get("MINIMUM_PASSWORD_LENGTH", 8)
-        target_config["RequireSymbols"] = os.environ.get("REQUIRE_SYMBOLS", True)
-        target_config["RequireNumbers"] = os.environ.get("REQUIRE_NUMBERS", True)
-        target_config["RequireUppercaseCharacters"] = os.environ.get("REQUIRE_UPPERCASE_CHARACTERS", True)
-        target_config["RequireLowercaseCharacters"] = os.environ.get("REQUIRE_LOWERCASE_CHARACTERS", True)
-        target_config["AllowUsersToChangePassword"] = os.environ.get("ALLOW_USERS_TO_CHANGE_PASSWORD", True)
-        target_config["MaxPasswordAge"] = os.environ.get("MAX_PASSWORD_AGE", 0)
-        target_config["PasswordReusePrevention"] = os.environ.get("PASSWORD_REUSE_PREVENTION", 0)
-        target_config["HardExpiry"] = os.environ.get("HARD_EXPIRY", False)
+        target_config["MinimumPasswordLength"] = os.environ.get("MINIMUM_PASSWORD_LENGTH")
+        target_config["RequireSymbols"] = os.environ.get("REQUIRE_SYMBOLS")
+        target_config["RequireNumbers"] = os.environ.get("REQUIRE_NUMBERS")
+        target_config["RequireUppercaseCharacters"] = os.environ.get("REQUIRE_UPPERCASE_CHARACTERS")
+        target_config["RequireLowercaseCharacters"] = os.environ.get("REQUIRE_LOWERCASE_CHARACTERS")
+        target_config["AllowUsersToChangePassword"] = os.environ.get("ALLOW_USERS_TO_CHANGE_PASSWORD")
+        target_config["MaxPasswordAge"] = os.environ.get("MAX_PASSWORD_AGE")
+        target_config["PasswordReusePrevention"] = os.environ.get("PASSWORD_REUSE_PREVENTION")
+        target_config["HardExpiry"] = os.environ.get("HARD_EXPIRY")
 
         return self.format_password_policy(target_config)
 
