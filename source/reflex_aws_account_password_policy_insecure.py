@@ -104,7 +104,7 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
                     formatted_policy[key] = True
                 elif value.lower() == "false":
                     formatted_policy[key] = False
-                elif int(value):
+                elif value.isdigit():
                     formatted_policy[key] = int(value)
                 else:
                     formatted_policy[key] = value
