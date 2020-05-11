@@ -1,5 +1,5 @@
 module "reflex_aws_account_password_policy_insecure" {
-  source           = "git::https://github.com/cloudmitigator/reflex-engine.git//modules/cwe_lambda?ref=v0.5.7"
+  source           = "git::https://github.com/cloudmitigator/reflex-engine.git//modules/cwe_lambda?ref=v0.6.0"
   rule_name        = "AccountPasswordPolicyInsecureRule"
   rule_description = "Ensures the account password policy remains in a secure state"
 
