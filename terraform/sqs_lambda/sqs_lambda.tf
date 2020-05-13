@@ -1,27 +1,4 @@
-module "reflex_aws_account_password_policy_insecure" {
-  source           = "git::https://github.com/cloudmitigator/reflex-engine.git//modules/cwe_lambda?ref=v0.5.7"
-  rule_name        = "AccountPasswordPolicyInsecureRule"
-  rule_description = "Ensures the account password policy remains in a secure state"
-
-  event_pattern = <<PATTERN
-{
-  "source": [
-    "aws.iam"
-  ],
-  "detail-type": [
-    "AWS API Call via CloudTrail"
-  ],
-  "detail": {
-    "eventSource": [
-      "iam.amazonaws.com"
-    ],
-    "eventName": [
-      "UpdateAccountPasswordPolicy",
-      "DeleteAccountPasswordPolicy"
-    ]
-  }
-}
-PATTERN
+module "sqs_lambda" {
 
   function_name   = "AccountPasswordPolicyInsecureRule"
   source_code_dir = "${path.module}/source"
@@ -63,4 +40,6 @@ EOF
 
   sns_topic_arn  = var.sns_topic_arn
   sqs_kms_key_id = var.reflex_kms_key_id
+}
+
 }
