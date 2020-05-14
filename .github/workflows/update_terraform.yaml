@@ -11,4 +11,5 @@ jobs:
       - name: update terraform dependencies
         uses: patrickjahns/dependabot-terraform-action@v1
         with:
+          directory: 'terraform/cwe/'
           github_dependency_token: ${{ secrets.DEPENDENCY_GITHUB_TOKEN }}
