@@ -1,5 +1,7 @@
 module "sqs_lambda" {
-
+  source                    = "git::https://github.com/cloudmitigator/reflex-engine.git//modules/sqs_lambda?ref=v0.6.0"
+  cloudwatch_event_rule_id  = var.cloudwatch_event_rule_id
+  cloudwatch_event_rule_arn = var.cloudwatch_event_rule_arn
   function_name   = "AccountPasswordPolicyInsecureRule"
   source_code_dir = "${path.module}/source"
   handler         = "reflex_aws_account_password_policy_insecure.lambda_handler"
