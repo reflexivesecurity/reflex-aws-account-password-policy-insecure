@@ -3,7 +3,7 @@ module "sqs_lambda" {
   cloudwatch_event_rule_id  = var.cloudwatch_event_rule_id
   cloudwatch_event_rule_arn = var.cloudwatch_event_rule_arn
   function_name             = "AccountPasswordPolicyInsecureRule"
-  package_location          = "${var.package_location}"
+  package_location          = var.package_location
   handler                   = "reflex_aws_account_password_policy_insecure.lambda_handler"
   lambda_runtime            = "python3.7"
   environment_variable_map = {
