@@ -18,6 +18,12 @@ variable "reflex_kms_key_id" {
   type        = string
 }
 
+variable "package_location" {
+  description = "Path for the Lambda deployment package"
+  type        = string
+  default     = "../package_build/account-password-policy-insecure.zip"
+}
+
 variable "minimum_password_length" {
   description = "Minimum characters for password required."
   type        = number
