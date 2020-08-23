@@ -27,7 +27,7 @@ variable "package_location" {
 variable "minimum_password_length" {
   description = "Minimum characters for password required."
   type        = number
-  default     = 8
+  default     = 14
 }
 
 variable "require_symbols" {
@@ -63,13 +63,13 @@ variable "allow_users_to_change_password" {
 variable "max_password_age" {
   description = "Maximume age in days of password (0 for none)"
   type        = number
-  default     = 0
+  default     = 90
 }
 
 variable "password_reuse_prevention" {
   description = "Number of passwords to prevent reuse (0 for no prevention)."
   type        = number
-  default     = 0
+  default     = 24
 }
 
 variable "hard_expiry" {
