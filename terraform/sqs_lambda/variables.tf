@@ -27,7 +27,7 @@ variable "package_location" {
 variable "minimum_password_length" {
   description = "Minimum characters for password required."
   type        = number
-  default     = 8
+  default     = 14
 }
 
 variable "require_symbols" {
