@@ -63,7 +63,7 @@ variable "allow_users_to_change_password" {
 variable "max_password_age" {
   description = "Maximume age in days of password (0 for none)"
   type        = number
-  default     = 0
+  default     = 90
 }
 
 variable "password_reuse_prevention" {
