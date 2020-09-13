@@ -30,7 +30,7 @@ rules:
 or add it directly to your Terraform:  
 ```
 module "account-password-policy-insecure" {
-  source            = "git::https://github.com/cloudmitigator/reflex-aws-account-password-policy-insecure.git?ref=v0.2.0"
+  source            = "git::https://github.com/reflexivesecurity/reflex-aws-account-password-policy-insecure.git?ref=v0.2.0"
   sns_topic_arn                  = module.central-sns-topic.arn
   reflex_kms_key_id              = module.reflex-kms-key.key_id
   minimum_password_length        = "10"
@@ -190,4 +190,4 @@ This rule has the following configuration options:
 If you are interested in contributing, please review [our contribution guide](https://docs.cloudmitigator.com/about/contributing.html).
 
 ## License
-This Reflex rule is made available under the MPL 2.0 license. For more information view the [LICENSE](https://github.com/cloudmitigator/reflex-aws-account-password-policy-insecure/blob/master/LICENSE)
+This Reflex rule is made available under the MPL 2.0 license. For more information view the [LICENSE](https://github.com/reflexivesecurity/reflex-aws-account-password-policy-insecure/blob/master/LICENSE)

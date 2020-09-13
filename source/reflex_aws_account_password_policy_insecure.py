@@ -5,7 +5,7 @@ import os
 
 import boto3
 
-from reflex_core import AWSRule
+from reflex_core import AWSRule, subscription_confirmation
 
 
 class AccountPasswordPolicyInsecureRule(AWSRule):
@@ -115,5 +115,9 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
 
 def lambda_handler(event, _):
     """ Handles the incoming event """
+    print(event)
+    if subscription_confirmation.is_subscription_confirmation(event):
+        subscription_confirmation.confirm_subscription(event)
+        return
     rule = AccountPasswordPolicyInsecureRule(json.loads(event["Records"][0]["body"]))
     rule.run_compliance_rule()
