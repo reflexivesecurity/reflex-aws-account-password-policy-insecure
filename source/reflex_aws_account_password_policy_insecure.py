@@ -5,7 +5,7 @@ import os
 
 import boto3
 
-from reflex_core import AWSRule
+from reflex_core import AWSRule, subscription_confirmation
 
 
 class AccountPasswordPolicyInsecureRule(AWSRule):
@@ -57,7 +57,9 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
 
     def get_remediation_message(self):
         """ Returns a message about the remediation action that occurred """
-        message = "The AWS account password policy was deleted or updated to be insecure. "
+        message = (
+            "The AWS account password policy was deleted or updated to be insecure. "
+        )
         if self.should_remediate():
             message += "It has been reset to the required policy."
 
@@ -67,14 +69,24 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
         """ Returns a dict with the target password policy configuration """
         target_config = {}
 
-        target_config["MinimumPasswordLength"] = os.environ.get("MINIMUM_PASSWORD_LENGTH")
+        target_config["MinimumPasswordLength"] = os.environ.get(
+            "MINIMUM_PASSWORD_LENGTH"
+        )
         target_config["RequireSymbols"] = os.environ.get("REQUIRE_SYMBOLS")
         target_config["RequireNumbers"] = os.environ.get("REQUIRE_NUMBERS")
-        target_config["RequireUppercaseCharacters"] = os.environ.get("REQUIRE_UPPERCASE_CHARACTERS")
-        target_config["RequireLowercaseCharacters"] = os.environ.get("REQUIRE_LOWERCASE_CHARACTERS")
-        target_config["AllowUsersToChangePassword"] = os.environ.get("ALLOW_USERS_TO_CHANGE_PASSWORD")
+        target_config["RequireUppercaseCharacters"] = os.environ.get(
+            "REQUIRE_UPPERCASE_CHARACTERS"
+        )
+        target_config["RequireLowercaseCharacters"] = os.environ.get(
+            "REQUIRE_LOWERCASE_CHARACTERS"
+        )
+        target_config["AllowUsersToChangePassword"] = os.environ.get(
+            "ALLOW_USERS_TO_CHANGE_PASSWORD"
+        )
         target_config["MaxPasswordAge"] = os.environ.get("MAX_PASSWORD_AGE")
-        target_config["PasswordReusePrevention"] = os.environ.get("PASSWORD_REUSE_PREVENTION")
+        target_config["PasswordReusePrevention"] = os.environ.get(
+            "PASSWORD_REUSE_PREVENTION"
+        )
         target_config["HardExpiry"] = os.environ.get("HARD_EXPIRY")
 
         return self.format_password_policy(target_config)
@@ -113,7 +125,13 @@ class AccountPasswordPolicyInsecureRule(AWSRule):
 
         return formatted_policy
 
+
 def lambda_handler(event, _):
     """ Handles the incoming event """
-    rule = AccountPasswordPolicyInsecureRule(json.loads(event["Records"][0]["body"]))
+    print(event)
+    event_payload = json.loads(event["Records"][0]["body"])
+    if subscription_confirmation.is_subscription_confirmation(event_payload):
+        subscription_confirmation.confirm_subscription(event_payload)
+        return
+    rule = AccountPasswordPolicyInsecureRule(event_payload)
     rule.run_compliance_rule()
